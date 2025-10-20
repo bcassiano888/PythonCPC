@@ -27,36 +27,31 @@ def subOperador(f):
             frase1.append(t)
     frasef = ' '.join(frase1)
     return frasef
-a = 'eu nao vou a praia e amanha chove'
+
+a =  'vou ao cinema ou se eu vou a praia entao nao vou a feira'
 
 def formato(f):
   import re
   frase = subOperador(f)
+  op = ['^','v','⭢','~']
   blocos = re.split(r'\s*(\^|⭢|\bv\b)\s*', frase)
   cap = []
   for i in blocos:
-    elemento = i.split()
-    for j in elemento:
-      passou = False
-      if j == "~":
-        cap.append(j+(elemento[-1][0]))
-        passou = True
-      if j in ['^','v','⭢']:
-        cap.append(j)
-        passou = True
-      
-      
+    i = i.strip()
+    if not i:
+        continue
+    if i == '^' or i == 'v' or i == '⭢':
+      cap.append(i)
+    else:
+      elemento = i.split()
+      if '~' in elemento:
+        cap.append('~'+ elemento[-1][0])
+      else:
+        cap.append(elemento[-1][0])
+
+  if cap[0] == '⭢':
+    cap = cap[1:]
   return cap
 
 print(formato(a))
-def treinotag():
-    import nltk
-    from nltk.tag import UnigramTagger
-    from nltk.corpus import mac_morpho
-    train_data = mac_morpho.tagged_sents()[:8000]
-    tagger = UnigramTagger(train_data)
-    frase = "O rápido gato preto pula alegremente sobre a mesa e olha para o cachorro que dorme."
-    a = tokenizador(frase)
-    tags = tagger.tag(a)
-    print(tags)
-treinotag()
+

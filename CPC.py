@@ -1,3 +1,5 @@
+from ast import Continue
+from operator import indexOf
 def tokenizador(f):
     import nltk
     nltk.download('punkt_tab')
@@ -27,8 +29,7 @@ def subOperador(f):
             frase1.append(t)
     frasef = ' '.join(frase1)
     return frasef
-
-a =  'se vou ao cinema entao nao vou a feira e se nao vai chover entao vai fazer sol'
+a = 'Se platão é mortal então não é imortal ou se platão é imortal então nao é mortal'
 
 def formato(f):
   import re
@@ -45,16 +46,23 @@ def formato(f):
     else:
       elemento = i.split()
       if '~' in elemento:
-        cap.append('~'+ elemento[-1][0])
+        cap.append('~'+ elemento[-1][0].upper())
       else:
-        cap.append(elemento[-1][0])
-  for i in range(len(cap)):
-    if cap[0] == '⭢':
-      cap = cap[1:]
-    if i+1 < len(cap) and (cap[i] =='v' or cap == '^') and cap[i+1] == '⭢':
-      cap.remove(cap[i+1])
+        cap.append(elemento[-1][0].upper())
+  fm = []
+  cont = 0
+  for i in cap:
+      
+      if cont == 0 and i == '⭢':
+        Continue
+      elif i == '⭢' and cap[cont-1] in ['^','v']:
+        Continue
+      else:
+        fm.append(i)
+      cont+=1
+
+  final = ' '.join(fm)
     
-  return cap
+  return final
 
 print(formato(a))
-

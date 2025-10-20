@@ -28,7 +28,7 @@ def subOperador(f):
     frasef = ' '.join(frase1)
     return frasef
 
-a =  'vou ao cinema ou se eu vou a praia entao nao vou a feira'
+a =  'se vou ao cinema entao nao vou a feira e se nao vai chover entao vai fazer sol'
 
 def formato(f):
   import re
@@ -48,9 +48,12 @@ def formato(f):
         cap.append('~'+ elemento[-1][0])
       else:
         cap.append(elemento[-1][0])
-
-  if cap[0] == '⭢':
-    cap = cap[1:]
+  for i in range(len(cap)):
+    if cap[0] == '⭢':
+      cap = cap[1:]
+    if i+1 < len(cap) and (cap[i] =='v' or cap == '^') and cap[i+1] == '⭢':
+      cap.remove(cap[i+1])
+    
   return cap
 
 print(formato(a))

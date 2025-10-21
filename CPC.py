@@ -2,6 +2,8 @@ def cpc(f):
   def tokenizador(f):
       import nltk
       nltk.download('punkt_tab',quiet=True)
+      
+
 
       from nltk.tokenize import word_tokenize
 
@@ -31,6 +33,12 @@ def cpc(f):
 
   def formato(f):
     import re
+    import nltk
+    from nltk.corpus import stopwords
+    nltk.download('stopwords')
+    stop_words = stopwords.words('portuguese')
+    stop_words.append('apenas')
+
     frase = subOperador(f)
     op = ['^','v','⭢','~']
     blocos = re.split(r'\s*(\^|⭢|\bv\b)\s*', frase)
@@ -43,10 +51,17 @@ def cpc(f):
         cap.append(i)
       else:
         elemento = i.split()
-        if '~' in elemento:
-          cap.append('~'+ elemento[-1][0].upper())
+        if '~' in elemento :
+          if elemento[-1] in stop_words:
+            cap.append('~'+ elemento[-2][0].upper())
+          else:
+            cap.append('~'+ elemento[-1][0].upper())
+
         else:
-          cap.append(elemento[-1][0].upper())
+          if elemento[-1] in stop_words:
+            cap.append(elemento[-2][0].upper())
+          else:
+            cap.append(elemento[-1][0].upper())
     fm = []
     cont = 0
     for i in cap: 
